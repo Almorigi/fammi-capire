@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fammi Capire</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    header {
+      background: white;
+      padding: 20px 40px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    header span {
+      font-size: 22px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #888;
+      margin-left: auto;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .hero h2 {
+      font-size: 36px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      color: #1a1a1a;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 220px;
+      padding: 16px;
+      border: 2px solid #eee;
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      resize: vertical;
+      transition: border-color 0.2s;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #999;
+      margin-top: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.2s;
+    }
+
+    button:hover { background: #1d4ed8; }
+    button:disabled { background: #93c5fd; cursor: not-allowed; }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #555;
+      font-size: 16px;
+      display: none;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid #eee;
+      border-top-color: #2563eb;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .result { display: none; }
+
+    .section {
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .section h3 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .section p {
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .section-blue { background: #eff6ff; }
+    .section-blue h3 { color: #2563eb; }
+
+    .section-green { background: #f0fdf4; }
+    .section-green h3 { color: #16a34a; }
+
+    .section-yellow { background: #fefce8; }
+    .section-yellow h3 { color: #ca8a04; }
+
+    .section-red { background: #fef2f2; }
+    .section-red h3 { color: #dc2626; }
+
+    .section-gray { background: #f9fafb; border: 2px solid #e5e7eb; }
+    .section-gray h3 { color: #374151; }
+
+    .section-gray p {
+      font-style: italic;
+      color: #374151;
+      font-size: 15px;
+    }
+
+    .reset-btn {
+      background: white;
+      color: #2563eb;
+      border: 2px solid #2563eb;
+      margin-top: 8px;
+    }
+
+    .reset-btn:hover { background: #eff6ff; }
+
+    .error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 16px;
+      color: #dc2626;
+      font-size: 14px;
+      margin-top: 16px;
+      display: none;
+    }
+
+    .examples {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .examples p {
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .tag {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span>📄</span>
+  <h1>Fammi Capire</h1>
+  <span class="subtitle">Traduciamo la burocrazia in italiano normale</span>
+</header>
+
+<main>
+  <div class="hero">
+    <h2>Hai ricevuto un documento<br>che non capisci?</h2>
+    <p>Incolla il testo qui sotto.<br>Ti spieghiamo in 10 secondi cosa dice e cosa devi fare.</p>
+  </div>
+
+  <div class="card">
+    <div id="input-section">
+      <label>Incolla il testo del documento</label>
+      <textarea id="doc-text" placeholder="Incolla qui la lettera dell'INPS, la clausola del contratto, la diagnosi medica, la bolletta strana..."></textarea>
+      <p class="hint">Funziona con lettere, contratti, referti medici, bollette, cartelle esattoriali e qualsiasi testo difficile.</p>
+      <div class="error" id="error-msg"></div>
+      <button onclick="analyze()" id="btn">Dimmi cosa significa →</button>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Sto analizzando il documento...</p>
+    </div>
+
+    <div class="result" id="result">
+      <div class="section section-blue">
+        <h3>📋 Cosa dice</h3>
+        <p id="r-cosa-dice"></p>
+      </div>
+      <div class="section section-green">
+        <h3>✅ Cosa devi fare</h3>
+        <p id="r-cosa-fare"></p>
+      </div>
+      <div class="section section-yellow">
+        <h3>⏰ Entro quando</h3>
+        <p id="r-entro-quando"></p>
+      </div>
+      <div class="section section-red">
+        <h3>⚠️ Cosa rischi</h3>
+        <p id="r-cosa-rischi"></p>
+      </div>
+      <div class="section section-gray">
+        <h3>🔍 Frase più importante</h3>
+        <p id="r-frase"></p>
+      </div>
+      <button class="reset-btn" onclick="reset()">← Analizza un altro documento</button>
+    </div>
+  </div>
+
+  <div class="examples">
+    <p>Esempi di documenti che puoi analizzare</p>
+    <div class="tags">
+      <span class="tag">Lettera INPS</span>
+      <span class="tag">Contratto di affitto</span>
+      <span class="tag">Referto medico</span>
+      <span class="tag">Cartella esattoriale</span>
+      <span class="tag">Bolletta anomala</span>
+      <span class="tag">Termini e condizioni</span>
+      <span class="tag">Lettera del datore di lavoro</span>
+      <span class="tag">Atto notarile</span>
+    </div>
+  </div>
+</main>
+
+<script>
+async function analyze() {
+  const text = document.getElementById('doc-text').value.trim();
+  const btn = document.getElementById('btn');
+  const loading = document.getElementById('loading');
+  const result = document.getElementById('result');
+  const inputSection = document.getElementById('input-section');
+  const errorMsg = document.getElementById('error-msg');
+
+  errorMsg.style.display = 'none';
+
+  if (text.length < 50) {
+    errorMsg.textContent = 'Il testo è troppo corto. Incolla almeno qualche riga del documento.';
+    errorMsg.style.display = 'block';
+    return;
+  }
+
+  inputSection.style.display = 'none';
+  loading.style.display = 'block';
+
+  try {
+    const response = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(data.error);
+
+    const raw = data.result;
+
+    document.getElementById('r-cosa-dice').textContent = extract(raw, 'COSA DICE', 'COSA DEVI FARE');
+    document.getElementById('r-cosa-fare').textContent = extract(raw, 'COSA DEVI FARE', 'ENTRO QUANDO');
+    document.getElementById('r-entro-quando').textContent = extract(raw, 'ENTRO QUANDO', 'COSA RISCHI');
+    document.getElementById('r-cosa-rischi').textContent = extract(raw, 'COSA RISCHI', 'FRASE PIÙ IMPORTANTE');
+    document.getElementById('r-frase').textContent = extract(raw, 'FRASE PIÙ IMPORTANTE', null);
+
+    loading.style.display = 'none';
+    result.style.display = 'block';
+
+  } catch (err) {
+    loading.style.display = 'none';
+    inputSection.style.display = 'block';
+    errorMsg.textContent = 'Errore durante l\'analisi. Riprova tra qualche secondo.';
+    errorMsg.style.display = 'block';
+  }
+}
+
+function extract(text, from, to) {
+  const start = text.indexOf(from);
+  if (start === -1) return '';
+  const content = text.slice(start + from.length);
+  const end = to ? content.indexOf(to) : content.length;
+  return content.slice(0, end === -1 ? content.length : end).trim();
+}
+
+function reset() {
+  document.getElementById('input-section').style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('doc-text').value = '';
+}
+</script>
+
+</body>
+</html>
